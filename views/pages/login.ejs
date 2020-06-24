@@ -1,0 +1,42 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ("../partials/head") %>
+</head>
+<body class="container">
+
+<header>
+    <%- include ("../partials/header") %>
+</header>
+
+<main>
+    <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="margin-top: 25px;">
+        <h1>Login</h1>
+        <p>Enter your email address and password to login.</p>
+        
+        <% if (typeof message !== 'undefined' ) { %>
+            <p style="font-size: small; color: red;"><%= message %></p>
+            <% } %>
+
+        <% if (messages.error) {%>
+        <%=   messages.error %>
+        <% } %> 
+        
+        <form action="/login" method="post">
+            <label>Username</label><br>
+            <input name="username" type="text"><br>
+            <label>Password</label><br>
+            <input name="password" type="text"><br><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</main>
+
+<footer>
+    <%- include ("../partials/footer") %>
+</footer>
+
+</body>
+</html>
