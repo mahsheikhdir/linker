@@ -17,13 +17,18 @@ module.exports = {
       callback(err, res);
     })
   },
-  asyncQuery: async (text, params, callback) => {
+  pquery: (text, params) => {
     const start = Date.now();
-    return pool.query(text, params, (err, res) => {
-      const duration = Date.now() - start;
-      console.log('Executed query', {text, params, duration});
-      callback(err, res);
-    })
+    return new Promise((resolve,reject) => {
+      pool.query(text, params, (err, res) => {
+        if(err) {
+          reject(err);
+        }
+        const duration = Date.now() - start;
+        console.log('Executed query', {text, params, duration});
+        resolve(res);
+      })
+    });
   },
   pool,
 }
