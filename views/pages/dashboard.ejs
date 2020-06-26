@@ -2,108 +2,116 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <%- include ("../partials/head") %>
+  <%- include ("../partials/head") %>
 </head>
+
 <body class="container">
 
-<header>
+  <header>
     <%- include ("../partials/header") %>
-</header>
+  </header>
 
-<main>
-    <div class="container shadow p-3 mb-5 bg-white rounded" style="margin-top: 25px; min-width: 500px;">
-        <div class="row">
-          <div class="col">
-            <div class="jumbotron shadow-sm p-3 mb-5 bg-white rounded" style="padding:25px;">
-                <h1><%=user.username%></h1>
-                <p style="margin: auto;">Hello <%=user.username%>!</p>
-                <a href="/newpost">Make a post</a>
+  <main>
+    <div style="margin-top: 25px; min-width: 500px;">
+      <div class="row">
+        <div class="col">
+          <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="padding:25px;">
+            <h1><span class="badge badge-light"><%=user.username%></span></h1>
+
+            <div class="container-sm">
+              <p style="margin: auto;">Hello <%=user.username%>!</p>
+              <p>Joined Linker on <%=user.date_created.toISOString().split("T")[0]%></p>
+            </div>
+            <br>
+          </div>
+
+          <div class="shadow p-3 mb-5 bg-white" style="margin-top: 20px; padding: 20px;">
+            <h3 style="text-align: center">Update account information</h3>
+
+            <div class="jumbotron" style="margin-top: 20px; padding: 20px; background: white;">
+              <form class="form-inline" method="post" action="/uemail">
+                <div class="form-group mb-2">
+                  <label for="inputPassword2" class="sr-only">Password</label>
+                  <input class="form-control" name="email" placeholder="<%=user.email%>">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2"style="margin-left: 50px">Change Email</button>
+              </form>
+
+              <form class="form-inline" method="post" action="/ubio">
+                <div class="form-group mb-2">
+                  <label for="inputPassword2" class="sr-only">Password</label>
+                  <input class="form-control" name="bio" placeholder="<%=user.bio%>">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2"style="margin-left: 50px">Change Bio</button>
+              </form>
+
+            </div>
+            
+          </div>
+          
+          <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="padding:25px;">
+            <h1>Followers</h1>
+            <% followers.forEach(follower => { %>
+            <a href="/user/<%=follower.username%>"><%= follower.username %> </a> <br>
+            <% }) %>
+
+          </div>
+
+          <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="padding:25px;">
+            <h1>Following</h1>
+            <% following.forEach(f => { %>
+            <a href="/user/<%=f.username%>"><%= f.username %> </a> <br>
+            <% }) %>
+
+          </div>
+        </div>
+        <div class="col">
+          <div class="shadow p-3 mb-5 bg-light" style="padding:20px">
+            <h3>Create Post</h3>
+
+            <% if (typeof message !== 'undefined' ) { %>
+            <p style="font-size: small; color: red;"><%= message %></p>
+            <% } %>
+
+            <% if (messages.error) {%>
+            <%=   messages.error %>
+            <% } %>
+
+            <form action="/newpost" method="post">
+              <div class="form-group">
+                <input name="title" class="form-control" placeholder="Title">
+                <textarea name="content" class="form-control" rows="3" placeholder="Got something to say?"></textarea>
+                <div class="form-check form-check-inline" style="float: right">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="public">
+                  <label class="form-check-label" for="inlineCheckbox1">Public</label>
+                </div>
                 <br>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Launch demo modal
-                </button>
-            </div>
-            <div class="jumbotron shadow-sm p-3 mb-5 bg-white rounded" style="padding:25px;">
-                <h1>Followers</h1>
-                <% followers.forEach(follower => { %>
-                    <a href="/user/<%=follower.username%>"><%= follower.username %> </a> <br>
-                <% }) %> 
-                
-            </div>
+                <button type="submit" class="btn btn-primary">Make Post</button>
+              </div>
+            </form>
 
-            <div class="jumbotron shadow-sm p-3 mb-5 bg-white rounded" style="padding:25px;">
-                <h1>Following</h1>
-                <% following.forEach(f => { %>
-                    <a href="/user/<%=f.username%>"><%= f.username %> </a> <br>
-                <% }) %> 
-                
-            </div>
+
           </div>
-          <div class="col">
-            <div class="jumbotron" style="padding:20px">
-                <h3>Create Post</h3>
-                
-                <% if (typeof message !== 'undefined' ) { %>
-                    <p style="font-size: small; color: red;"><%= message %></p>
-                    <% } %>
-        
-                <% if (messages.error) {%>
-                <%=   messages.error %>
-                <% } %> 
-                
-                <form action="/newpost" method="post">
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input name="title" class="form-control" placeholder="Post Title!">
-                        <br>
-                        <label>Content</label>
-                        <textarea name="content" class="form-control" rows="3" placeholder="Hello World!"></textarea>
-                        <br>
-                        <button type="submit" class="btn btn-primary">Make Post</button>
-                    </div>
-                </form>
-                
-        
-            </div>
-            <% if(typeof posts !== 'undefined') { %>
-                <% posts.forEach(element => { %>
-                <%- include ("../partials/post", {title: element.title, content: element.body, author: element.author}) %>
-            <% }); %>
-            <% } %> 
-            <div class="jumbotron" style="padding:25px;">
-                <h4>No more posts!</h4>
-            </div>
-            </div>
-        </div>
-      </div>
-    
-
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+          <% if(typeof posts !== 'undefined') { %>
+          <% posts.forEach(element => { %>
+          <%- include ("../partials/post", {post: element}) %>
+          <% }); %>
+          <% } %>
+          <div class="jumbotron shadow p-3 mb-5 bg-white" style="padding:25px;">
+            <h4>No more posts!</h4>
           </div>
         </div>
       </div>
+    </div>
     
-</main>
+  </main>
 
-<footer>
+  <footer>
     <%- include ("../partials/footer") %>
-</footer>
+  </footer>
 
 </body>
+
 </html>

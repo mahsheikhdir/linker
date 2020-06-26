@@ -2,25 +2,37 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include ("../partials/head") %>
 </head>
+
 <body class="container">
 
-<header>
-    <%- include ("../partials/header") %>
-</header>
+    <header>
+        <%- include ("../partials/header") %>
+    </header>
 
-<main>
-    <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="margin-top: 25px;">
-        <h1>Welcome to Linker!</h1>
-        <p>Connect with others</p>
-    </div>
-</main>
+    <main>
+        <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="margin:auto;width:500px;margin-top: 25px;">
+            <h1>Welcome to Linker!</h1>
+            <p>Connect with others</p>
+        </div>
+        </div style="margin:auto; width:500px;">
+        <% if(typeof posts !== 'undefined') { %>
+        <% posts.forEach(element => { %>
+        <%- include ("../partials/post", {post: element}) %>
+        <% }); %>
+        <% } %>
+        <div class="jumbotron shadow p-3 mb-5 bg-white" style="margin:auto; width:500px;">
+            <h4>No more posts!</h4>
+        </div>
+    </main>
 
-<footer>
-    <%- include ("../partials/footer") %>
-</footer>
+    <footer>
+        <%- include ("../partials/footer") %>
+    </footer>
 
 </body>
+
 </html>

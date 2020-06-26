@@ -11,7 +11,6 @@ const loremIpsum = require('lorem-ipsum').loremIpsum;
 
 const db = require('./db')
 const queries = require('./queries');
-const { selectUserFromUsername } = require('./queries');
 const port = 5000
 
 app.use(express.urlencoded({extended : true}));
@@ -32,8 +31,13 @@ app.use(passport.session());
 app.use(flash());
 
 // HOME PAGE
-app.get('/', (req, res) => {
-    res.render('pages/index');
+app.get('/', async (req, res) => {
+    try {
+        const public_posts = await queries.getPublicPosts();
+        res.render('pages/index', {posts: public_posts.rows});
+    } catch (err) {
+        console.log(err);
+    }
 })
 
 // REGISTER PAGE
@@ -124,6 +128,7 @@ app.post('/register', async (req, res) => {
     }
 })
 
+
 // LOGIN AUTHENTICATION
 app.post('/login', passport.authenticate("local", {
     successRedirect: "/dashboard",
@@ -133,18 +138,49 @@ app.post('/login', passport.authenticate("local", {
 
 // PUBLISH POST
 app.post('/newpost', checkAuth, async (req, res) => {
-    const {title, content} = req.body;
+    const {title, content, public} = req.body;
+    let is_private;
 
+    if(public == "on"){
+        is_private = false;
+    } else {
+        is_private = true;
+    }
+
+    console.log(req.body, public, is_private);
     try {
-        const post = await queries.newPost(title, content, req.user.uid, req.user.username);
+        const post = await queries.newPost(title, content, req.user.uid, req.user.username, is_private);
         res.redirect('/dashboard');
     } catch (err) {
         console.log(err);
     }
 })
 
+//CHANGE EMAIL
+app.post("/uemail", checkAuth, async (req, res) => {
+    const email = req.body.email;
+
+    const uemail = await queries.updateEmail(req.user.uid, email);
+
+    res.redirect("/dashboard");
+})
+
+//CHANGE BIO
+app.post("/ubio", checkAuth, async (req, res) => {
+    const bio = req.body.bio;
+
+    const uemail = await queries.updateBio(req.user.uid, bio);
+
+    res.redirect("/dashboard")
+})
+
 // FOLLOW USER
 app.post('/follow', checkAuth, async (req, res) => {
+
+    if(req.user.username == req.body.follow){
+        res.redirect("/dashboard");
+        next();
+    }
 
     try {
         const user = await queries.selectUserFromUsername(req.body.follow);

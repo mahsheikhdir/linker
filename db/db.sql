@@ -2,6 +2,7 @@ CREATE TABLE users (
     uid SERIAL PRIMARY KEY,
     username VARCHAR(255) UNIQUE,
     password TEXT,
+    bio VARCHAR,
     email VARCHAR(255),
     email_verified BOOLEAN,
     isPrivate BOOLEAN,
@@ -15,6 +16,7 @@ CREATE TABLE posts (
     body VARCHAR,
     user_id INT REFERENCES users(uid),
     author VARCHAR REFERENCES users(username),
+    is_private BOOLEAN,
     date_created TIMESTAMP
 );
 

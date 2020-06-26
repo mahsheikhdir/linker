@@ -23,11 +23,20 @@ module.exports = {
     unfollowUser: (fid) => {
         return db.pquery("DELETE FROM follow where fid = $1;", [fid])
     },
-    newPost: (title, content, user_id, username) => {
-        return db.pquery("INSERT INTO posts (title, body, user_id, author, date_created) VALUES ($1, $2, $3, $4, NOW());", [title, content, user_id, username]);
+    newPost: (title, content, user_id, username, is_private) => {
+        return db.pquery("INSERT INTO posts (title, body, user_id, author, is_private, date_created) VALUES ($1, $2, $3, $4, $5, NOW());", [title, content, user_id, username, is_private]);
     },
     newUser: (username, password, email) => {
         return db.pquery("INSERT INTO users (username, password, email, email_verified, isprivate, date_created, last_login) VALUES ($1, $2, $3, $4, false, NOW(),NOW()) RETURNING uid, password;", [username, password, email, false]);
+    },
+    updateEmail: (user_id, new_email) => {
+        return db.pquery("UPDATE users SET email = $1 WHERE uid = $2", [new_email, user_id])
+    },
+    updateBio: (user_id, new_bio) => {
+        return db.pquery("UPDATE users SET bio = $1 WHERE uid = $2", [new_bio, user_id])
+    },
+    getPublicPosts: () => {
+        return db.pquery("SELECT * FROM posts where is_private = false order by random();");
     }
 
 }
