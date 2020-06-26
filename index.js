@@ -142,9 +142,9 @@ app.post('/newpost', checkAuth, async (req, res) => {
     let is_private;
 
     if(public == "on"){
-        is_private = false;
-    } else {
         is_private = true;
+    } else {
+        is_private = false;
     }
 
     console.log(req.body, public, is_private);

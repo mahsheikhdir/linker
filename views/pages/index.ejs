@@ -14,16 +14,25 @@
     </header>
 
     <main>
-        <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="margin:auto;width:500px;margin-top: 25px;">
+        <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="margin:auto;margin-top: 25px;">
             <h1>Welcome to Linker!</h1>
             <p>Connect with others</p>
         </div>
-        </div style="margin:auto; width:500px;">
-        <% if(typeof posts !== 'undefined') { %>
-        <% posts.forEach(element => { %>
-        <%- include ("../partials/post", {post: element}) %>
-        <% }); %>
-        <% } %>
+
+        <div class="container">
+            <div class="row row-cols-3">
+
+                    <% if(typeof posts !== 'undefined') { %>
+                        <% posts.forEach(element => { %>
+                            <div class="col">
+                                <%- include ("../partials/post", {post: element}) %>
+                            </div>
+                        <% }); %>
+                        <% } %>
+            </div>
+        </div>
+        
+        
         <div class="jumbotron shadow p-3 mb-5 bg-white" style="margin:auto; width:500px;">
             <h4>No more posts!</h4>
         </div>
