@@ -11,7 +11,7 @@ const loremIpsum = require('lorem-ipsum').loremIpsum;
 
 const db = require('./db')
 const queries = require('./queries');
-const port = 5000
+const port = process.env.PORT || 5000
 
 app.use(express.urlencoded({extended : true}));
 app.set('view engine', 'ejs');
