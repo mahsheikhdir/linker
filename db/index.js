@@ -8,6 +8,7 @@ const { Pool } = require('pg')
 //     port: 5432
 
 // })
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
