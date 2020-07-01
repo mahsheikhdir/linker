@@ -49,6 +49,14 @@
       <% }) %>
     </div>
 
+    <% if(typeof posts !== 'undefined') { %>
+      <% posts.forEach(element => { %>
+      <div class="col">
+          <%- include ("../partials/post", {post: element}) %>
+      </div>
+      <% }); %>
+    <% } %>
+
   </main>
 
   <footer>
