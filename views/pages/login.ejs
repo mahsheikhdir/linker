@@ -2,41 +2,56 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include ("../partials/head") %>
 </head>
-<body class="container">
 
-<header>
-    <%- include ("../partials/header") %>
-</header>
+<body>
 
-<main>
-    <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="margin-top: 25px;">
-        <h1>Login</h1>
-        <p>Enter your email address and password to login.</p>
+    <header>
+        <%- include ("../partials/header") %>
+    </header>
+
+    <main>
+        <div class="jumbotron shadow-sm bg-white rounded reg-card">
+            <h1 class="center-txt">Login</h1>
+
+
+            
+
+            <form action="/login" method="post">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input class="form-control" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+
+                    <% if (typeof message !== 'undefined' ) { %>
+                    <p style="font-size: small; color: red;"><%= message %></p>
+                    <% } %>
         
-        <% if (typeof message !== 'undefined' ) { %>
-            <p style="font-size: small; color: red;"><%= message %></p>
-            <% } %>
+                    <% if (messages.error) {%>
+                    <p style="font-size: small; color: red; text-align: center;"><%= messages.error %></p>
+                    <% } %>
 
-        <% if (messages.error) {%>
-        <%=   messages.error %>
-        <% } %> 
-        
-        <form action="/login" method="post">
-            <label>Username</label><br>
-            <input name="username" type="text" required><br>
-            <label>Password</label><br>
-            <input name="password" type="password" required><br><br>
-            <input type="submit" value="Login">
-        </form>
-    </div>
-</main>
 
-<footer>
-    <%- include ("../partials/footer") %>
-</footer>
+                <div class="login-btn">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+            <p class="login-register-txt">Don't have an account? Click here to <a class="reg-link"
+                    href="/register">Register</a>.</p>
+        </div>
+    </main>
+
+    <footer>
+        <%- include ("../partials/footer") %>
+    </footer>
 
 </body>
+
 </html>

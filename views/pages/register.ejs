@@ -5,30 +5,44 @@
 <head>
     <%- include ("../partials/head") %>
 </head>
-<body class="container">
+<body>
 
 <header>
     <%- include ("../partials/header") %>
 </header>
 
 <main>
-    <div class="jumbotron shadow p-3 mb-5 bg-white rounded" style="margin-top: 25px;">
-        <h1>Register</h1>
-        <p>We just need some of your info to get started...</p>
-        
+    <div class="jumbotron shadow-sm bg-white rounded reg-card">
+        <h1 class="center-txt">Register</h1>
+
+
         <% if (typeof message !== 'undefined' ) { %>
-            <p style="font-size: small; color: red;"><%= message %></p>
-            <% } %>
+        <p style="font-size: small; color: red;"><%= message %></p>
+        <% } %>
+
+        <% if (messages.error) {%>
+        <%=   messages.error %>
+        <% } %>
 
         <form action="/register" method="post">
-            <label>Username</label><br>
-            <input name="username" type="text"><br>
-            <label>Email Address</label><br>
-            <input name="email" type="text"><br>
-            <label>Password</label><br>
-            <input name="password" type="password"><br><br>
-            <input type="submit" value="Register">
+            <div class="form-group">
+                <label>Username</label>
+                <input class="form-control" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <div class="login-btn">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
         </form>
+        <p class="login-register-txt">Already registered? Click here to <a class="reg-link"
+                href="/login">Login</a>.</p>
     </div>
 </main>
 

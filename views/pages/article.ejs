@@ -1,0 +1,44 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include ("../partials/head") %>
+</head>
+
+<body>
+
+  <header>
+    <%- include ("../partials/header") %>
+  </header>
+
+  <main>
+    <div class="card reg-card" style="max-width: 90%; padding: 0px">
+        <h5 class="card-header" style="background-color: #3ca59d; color: white"><%= post.title %></h5>
+        <div class="card-body">
+            
+            <% if(post.is_private) { %>
+            <h5 class="card-title"><span class="badge badge-light badge-custom">By <%=post.author%> <span class="badge badge-info">Private</span></h5>
+            <% } else { %>
+                <h5 class="card-title"><span class="badge badge-light badge-custom">By <%=post.author%> <span class="badge badge-custom-alt">Public</span></h5>
+            <% } %>
+            <div>
+              <p class="card-text"><%- post.markup %> </p>
+            </div>
+            <% if (typeof loggedIn_user !== 'undefined') { %> 
+            <% if(loggedIn_user.username == post.author) { %>
+                <a href="/edit/<%= post.slug %>" class="btn btn-info">Edit</a>
+                <a href="#" class="btn btn-danger">Remove</a>
+            <% }} %>
+        </div>
+    </div>
+  </main>
+
+  <footer>
+    <%- include ("../partials/footer") %>
+  </footer>
+
+</body>
+
+</html>

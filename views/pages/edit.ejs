@@ -14,7 +14,7 @@
 <main>
     <div class="jumbotron shadow-sm bg-white rounded reg-card" style="padding:20px; width:700px; min-width: 500px;">
         <h3><span
-              class="badge badge-light badge-custom-alt">Create Post</span></h3>
+              class="badge badge-light badge-custom-alt">Edit Post</span></h3>
   
         <% if (typeof message !== 'undefined' ) { %>
         <p style="font-size: small; color: red;"><%= message %></p>
@@ -24,17 +24,18 @@
         <%=   messages.error %>
         <% } %>
   
-        <form action="/newpost" method="post">
+        <form action="/edit/<%= post.pid %>?_method=PUT" method="post">
           <div class="form-group">
-            <input name="title" class="form-control" placeholder="Title" required>
-            <input name="description" class="form-control" placeholder="Description" required>
-            <textarea name="content" class="form-control" rows="20" placeholder="Got something to say? (supports markup)." required></textarea>
+            <input name="title" class="form-control" value="<%= post.title %>" required>
+            <input name="description" class="form-control" value="<%= post.post_description %>" required>
+            <textarea name="content" class="form-control" rows="20" required><%= post.body %></textarea>
             <div class="form-check form-check-inline" style="float: right">
               <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="public">
               <label class="form-check-label" for="inlineCheckbox1"><span class="badge badge-light badge-custom-alt">Private</span></label>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Post</button>
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" class="btn btn-primary">Make Changes</button>
           </div>
         </form>
       </div>

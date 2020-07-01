@@ -23,8 +23,11 @@ module.exports = {
     unfollowUser: (fid) => {
         return db.pquery("DELETE FROM follow where fid = $1;", [fid])
     },
-    newPost: (title, content, user_id, username, is_private) => {
-        return db.pquery("INSERT INTO posts (title, body, user_id, author, is_private, date_created) VALUES ($1, $2, $3, $4, $5, NOW());", [title, content, user_id, username, is_private]);
+    newPost: (title, content, description, markup, user_id, username, is_private, slug) => {
+        return db.pquery("INSERT INTO posts (title, body, user_id, author, is_private, slug, markup, post_description, date_created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW());", [title, content, user_id, username, is_private, slug, markup, description]);
+    },
+    updatePost: (id, title, content, description, markup, slug) => {
+        return db.pquery("UPDATE posts SET title = $1, body = $2, post_description = $3, slug = $4, markup = $5 WHERE pid = $6", [title, content, description, slug, markup, id])
     },
     newUser: (username, password, email) => {
         return db.pquery("INSERT INTO users (username, password, email, email_verified, isprivate, date_created, last_login) VALUES ($1, $2, $3, $4, false, NOW(),NOW()) RETURNING uid, password;", [username, password, email, false]);
@@ -37,6 +40,12 @@ module.exports = {
     },
     getPublicPosts: () => {
         return db.pquery("SELECT * FROM posts where is_private = false order by random();");
+    },
+    getSinglePost: (slug) => {
+        return db.pquery("SELECT * FROM posts where slug = $1;", [slug]);
+    },
+    deleteArticle: (id) => {
+        return db.pquery("DELETE FROM posts where pid = $1;", [id]);
     }
 
 }

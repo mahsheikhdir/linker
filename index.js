@@ -4,10 +4,18 @@ const flash = require('express-flash');
 const bcrypt = require("bcrypt");
 const passport = require('passport');
 const configurePassport = require('./passportConfig');
+const marked = require('marked');
+const slugify = require('slugify');
+const methodOverride = require('method-override');
+const favicon = require('express-favicon');
+
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+
+const domPurify = createDOMPurify(new JSDOM().window);
 
 const app = express()
 
-const loremIpsum = require('lorem-ipsum').loremIpsum;
 
 const db = require('./db')
 const queries = require('./queries');
@@ -15,6 +23,8 @@ const port = process.env.PORT || 5000
 
 app.use(express.urlencoded({extended : true}));
 app.set('view engine', 'ejs');
+
+app.use(methodOverride('_method'));
 
 app.use(
     session({
@@ -31,9 +41,17 @@ app.use(passport.session());
 app.use(flash());
 
 
+
 // Serve Static files
 
 app.use(express.static('public'));
+
+app.use(favicon(__dirname+'/public/favicon.ico'))
+
+app.use(function(req, res, next) {
+    res.locals.loggedIn_user = req.user;
+    next();
+})
 
 // HOME PAGE
 app.get('/', async (req, res) => {
@@ -44,6 +62,10 @@ app.get('/', async (req, res) => {
         console.log(err);
     }
 })
+
+app.post('/', (req, res) => {
+    res.redirect('/');
+} )
 
 // REGISTER PAGE
 app.get('/register', (req, res) => {
@@ -76,7 +98,26 @@ app.get('/dashboard', checkAuth, async (req, res) => {
 
 })
 
+app.get('/edit/:id', checkAuth, async (req, res) => {
+    try {
+        const editPost = await queries.getSinglePost(req.params.id);
+        console.log(editPost.rows[0]);
+        res.render('pages/edit', {post : editPost.rows[0]});
+    } catch (err) {
+        console.log(err);
+    }
+})
 
+app.get('/article/:slug', checkAuth, async (req, res) => {
+    console.log("SLGUWEFJ WE");
+    try {
+        const article = await queries.getSinglePost(req.params.slug);
+        
+        res.render('pages/article', {post: article.rows[0]});
+    } catch (err) {
+        console.log(err);
+    }
+})
 // USER PAGE
 app.get('/user/:username', checkAuth, async (req, res) => {
     try {
@@ -105,10 +146,20 @@ app.get('/user/:username', checkAuth, async (req, res) => {
 })
 
 // LOGOUT PAGE
-app.get('/logout', (req, res) => {
-    res.render('pages/index');
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
 })
 
+app.delete('/article/:id', async (req, res) => {
+    try {
+        console.log("DELETING POST", req.params.id);
+        const deleteArticle = await queries.deleteArticle(req.params.id);
+        res.redirect('/');
+    } catch (err) {
+        console.log(err);
+    }
+})
 // *** POST REQUESTS ***
 
 // REGISTER USER WITH USERNAME AND PASSWORD
@@ -141,9 +192,8 @@ app.post('/login', passport.authenticate("local", {
     failureFlash: true
 }))
 
-// PUBLISH POST
-app.post('/newpost', checkAuth, async (req, res) => {
-    const {title, content, public} = req.body;
+app.put('/edit/:id', checkAuth, async (req, res) => {
+    const {title, description, content, public} = req.body;
     let is_private;
 
     if(public == "on"){
@@ -151,10 +201,39 @@ app.post('/newpost', checkAuth, async (req, res) => {
     } else {
         is_private = false;
     }
+    
+    let markedContent = marked(content);
+    let sanitizedContent = domPurify.sanitize(markedContent);
+
+    let slug = slugify(title, {lower: true, strict: true});
 
     console.log(req.body, public, is_private);
     try {
-        const post = await queries.newPost(title, content, req.user.uid, req.user.username, is_private);
+        const post = await queries.updatePost(req.params.id, title, content, description, sanitizedContent, slug);
+        res.redirect('/dashboard');
+    } catch (err) {
+        console.log(err);
+    }
+})
+// PUBLISH POST
+app.post('/newpost', checkAuth, async (req, res) => {
+    const {title, description, content, public} = req.body;
+    let is_private;
+
+    if(public == "on"){
+        is_private = true;
+    } else {
+        is_private = false;
+    }
+    
+    let markedContent = marked(content);
+    let sanitizedContent = domPurify.sanitize(markedContent);
+
+    let slug = slugify(title, {lower: true, strict: true});
+
+    console.log(req.body, public, is_private);
+    try {
+        const post = await queries.newPost(title, content, description, sanitizedContent, req.user.uid, req.user.username, is_private, slug);
         res.redirect('/dashboard');
     } catch (err) {
         console.log(err);

@@ -13,11 +13,14 @@ CREATE TABLE users (
 CREATE TABLE posts (
     pid SERIAL PRIMARY KEY,
     title VARCHAR(255),
-    body VARCHAR,
+    body TEXT,
+    post_description VARCHAR,
+    markup TEXT,
     user_id INT REFERENCES users(uid),
     author VARCHAR REFERENCES users(username),
     is_private BOOLEAN,
-    date_created TIMESTAMP
+    date_created TIMESTAMP,
+    slug VARCHAR,
 );
 
 CREATE TABLE follow (

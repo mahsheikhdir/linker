@@ -1,3 +1,111 @@
-body {
-    background-color : black;
+img {
+    max-width: 100%;
+    max-height: 100%;
 }
+
+td {
+    border: solid 2px lightgrey;
+    padding: px;
+}
+
+body {
+    background-color: #f4f6ff;
+}
+.profile {
+    padding: 0;
+}
+.badge-custom {
+   background-color: #3ca59d;
+   color: white;
+}
+.badge-custom-alt {
+    background-color: #ffa931;
+    color: white;
+
+}
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,1.0)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  }
+
+.reg-post {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.reg-link {
+    color:  #3ca59d;
+}
+.reg-link:hover {
+    color: black;
+}
+
+.btn-primary {
+    background-color: #3ca59d;
+    border-width: 0px;
+}
+.btn-primary:hover{
+    background-color: #ffa931;
+}
+.btn-primary:active:focus {
+    background-color: #ffa931 !important;
+}
+
+.center-txt{
+    text-align: center;
+}
+.login-btn {
+    display: flex;
+    justify-content: center;
+}
+
+.login-register-txt {
+    padding: 20px 10px 10px 10px;
+    text-align: center;
+}
+
+.reg-card {
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+    padding: 50px;
+    margin-bottom: 25px;
+}
+
+.navbar {
+    background-color: #3ca59d;
+}
+.navbar-collapse {
+    flex-grow: 0;
+    margin-left: auto;
+}
+nav .nav-link {
+    color: white;
+}
+.navbar-brand {
+    font-size: 1.0rem;
+    color: white;
+    font-weight: bold;
+}
+
+a:hover {
+    color: white;
+}
+
+.svg-icon {
+    width: 2em;
+    height: 2em;
+    margin-right: 10px;
+  }
+  
+  .svg-icon path,
+  .svg-icon polygon,
+  .svg-icon rect {
+    fill: white;
+  }
+  
+  .svg-icon circle {
+    stroke: black;
+    stroke-width: 3;
+  }

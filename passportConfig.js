@@ -38,15 +38,15 @@ function initialize(passport) {
     ))
     
     passport.serializeUser((user, done) => {
-        console.log('serialize');
+        //console.log('serialize');
         done(null, user.uid)});
     passport.deserializeUser((id, done) => {
         db.query("SELECT * FROM users where uid = $1;", [id], (err, results) => {
-            console.log('deserialize');
+            //console.log('deserialize');
             if(err){
                 done(err);
             }
-            console.log(id);
+            //console.log(id);
             return done(null, results.rows[0]);
         })
     })
