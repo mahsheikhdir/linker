@@ -26,8 +26,8 @@ module.exports = {
     newPost: (title, content, description, markup, user_id, username, is_private, slug) => {
         return db.pquery("INSERT INTO posts (title, body, user_id, author, is_private, slug, markup, post_description, date_created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW());", [title, content, user_id, username, is_private, slug, markup, description]);
     },
-    updatePost: (id, title, content, description, markup, slug) => {
-        return db.pquery("UPDATE posts SET title = $1, body = $2, post_description = $3, slug = $4, markup = $5 WHERE pid = $6", [title, content, description, slug, markup, id])
+    updatePost: (id, title, content, description, markup, slug, is_private) => {
+        return db.pquery("UPDATE posts SET title = $1, body = $2, post_description = $3, slug = $4, markup = $5, is_private = $6 WHERE pid = $7", [title, content, description, slug, markup, is_private, id])
     },
     newUser: (username, password, email) => {
         return db.pquery("INSERT INTO users (username, password, email, email_verified, isprivate, date_created, last_login) VALUES ($1, $2, $3, $4, false, NOW(),NOW()) RETURNING uid, password;", [username, password, email, false]);
