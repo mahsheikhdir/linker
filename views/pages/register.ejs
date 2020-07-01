@@ -15,15 +15,6 @@
     <div class="jumbotron shadow-sm bg-white rounded reg-card">
         <h1 class="center-txt">Register</h1>
 
-
-        <% if (typeof message !== 'undefined' ) { %>
-        <p style="font-size: small; color: red;"><%= message %></p>
-        <% } %>
-
-        <% if (messages.error) {%>
-        <%=   messages.error %>
-        <% } %>
-
         <form action="/register" method="post">
             <div class="form-group">
                 <label>Username</label>
@@ -37,6 +28,16 @@
                 <label>Password</label>
                 <input type="password" class="form-control" name="password" required>
             </div>
+
+            <% if (typeof message !== 'undefined' ) { %>
+                <p style="font-size: small; color: red; text-align: center"><%= message %></p>
+                <% } %>
+        
+                <% if (messages.error) {%>
+                <%=   messages.error %>
+                <% } %>
+
+            
             <div class="login-btn">
                 <button type="submit" class="btn btn-primary">Register</button>
             </div>

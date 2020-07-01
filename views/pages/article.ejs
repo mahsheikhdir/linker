@@ -19,9 +19,9 @@
         <div class="card-body">
             
             <% if(post.is_private) { %>
-            <h5 class="card-title"><span class="badge badge-light badge-custom">By <%=post.author%> <span class="badge badge-info">Private</span></h5>
+            <h5 class="card-title"><a href="/user/<%= post.author %>"><span class="badge badge-light badge-custom">By <%=post.author%> <span class="badge badge-info">Private</span></a></h5>
             <% } else { %>
-                <h5 class="card-title"><span class="badge badge-light badge-custom">By <%=post.author%> <span class="badge badge-custom-alt">Public</span></h5>
+                <h5 class="card-title"><a href="/user/<%= post.author %>"></a><span class="badge badge-light badge-custom">By <%=post.author%> <span class="badge badge-custom-alt">Public</span></a></h5>
             <% } %>
             <div>
               <p class="card-text"><%- post.markup %> </p>

@@ -51,6 +51,10 @@ app.use(function(req, res, next) {
     next();
 })
 
+
+
+// TODO anyone can delete or edit anyone elses stuff
+
 // HOME PAGE
 app.get('/', async (req, res) => {
     try {
@@ -163,6 +167,10 @@ app.delete('/article/:id', async (req, res) => {
 // REGISTER USER WITH USERNAME AND PASSWORD
 app.post('/register', async (req, res) => {
     const {username, email, password} = req.body;
+
+    if(username.includes(" ")){
+        return res.render('pages/register', {message: "Username cannot have spaces"}); 
+    }
     
     try {
         console.log(username, email, password);
