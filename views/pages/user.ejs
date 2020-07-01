@@ -2,48 +2,59 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <%- include ("../partials/head") %>
+  <%- include ("../partials/head") %>
 </head>
+
 <body>
 
-<header>
+  <header>
     <%- include ("../partials/header") %>
-</header>
+  </header>
 
-<main>
+  <main>
 
 
     <div class="jumbotron shadow-sm bg-white rounded reg-card">
-        <div>
-          <h1><span class="badge badge-light badge-custom"><%=user.username%></span></h1>
-          <h3><span class="badge badge-light" style="background-color: #ffa931; color: white"><%=user.bio%></span></h3>
-          <h3><span class="badge badge-light" style="background-color: #ffa931; color: white">Joined Linker on
-              <%=user.date_created.toISOString().split("T")[0]%></span></h3>
-        </div>
-      </div>
-  
-      <div class="jumbotron shadow-sm bg-white rounded reg-card" style="padding: 25px">
-        <h1><span class="badge badge-light badge-custom-alt">Followers</span></h1>
-        <% followers.forEach(follower => { %>
-        <h5><a href="/user/<%=follower.username%>"><span
-              class="badge badge-light badge-custom"><%=follower.username%></span></a></h>
-        <% }) %>
-      </div>
-  
-      <div class="jumbotron shadow-sm bg-white rounded reg-card" style="padding: 25px">
-        <h1><span class="badge badge-light badge-custom-alt">Following</span></h1>
-        <% following.forEach(follow => { %>
-        <h5><a href="/user/<%=follow.username%>"><span
-              class="badge badge-light badge-custom"><%=follow.username%></span></a></h5>
-        <% }) %>
-      </div>
+      <div>
+        <h1><span class="badge badge-light badge-custom"><%=user.username%></span></h1>
+        <h3><span class="badge badge-light" style="background-color: #ffa931; color: white"><%=user.bio%></span></h3>
+        <h3><span class="badge badge-light" style="background-color: #ffa931; color: white">Joined Linker on
+            <%=user.date_created.toISOString().split("T")[0]%></span></h3>
+        <form action="/follow" method="post">
+          <% if (follow) { %>
+          <button class="btn btn-primary" name="follow" value=<%=user.username%>>Unfollow</button>
+          <% } else { %>
+          <button class="btn btn-primary" name="follow" value=<%=user.username%>>Follow</button>
+          <% } %>
+        </form>
 
-</main>
+      </div>
+    </div>
 
-<footer>
+    <div class="jumbotron shadow-sm bg-white rounded reg-card" style="padding: 25px">
+      <h1><span class="badge badge-light badge-custom-alt">Followers</span></h1>
+      <% followers.forEach(follower => { %>
+      <h5><a href="/user/<%=follower.username%>"><span
+            class="badge badge-light badge-custom"><%=follower.username%></span></a></h>
+        <% }) %>
+    </div>
+
+    <div class="jumbotron shadow-sm bg-white rounded reg-card" style="padding: 25px">
+      <h1><span class="badge badge-light badge-custom-alt">Following</span></h1>
+      <% following.forEach(follow => { %>
+      <h5><a href="/user/<%=follow.username%>"><span
+            class="badge badge-light badge-custom"><%=follow.username%></span></a></h5>
+      <% }) %>
+    </div>
+
+  </main>
+
+  <footer>
     <%- include ("../partials/footer") %>
-</footer>
+  </footer>
 
 </body>
+
 </html>

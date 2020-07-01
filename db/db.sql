@@ -20,11 +20,11 @@ CREATE TABLE posts (
     author VARCHAR REFERENCES users(username),
     is_private BOOLEAN,
     date_created TIMESTAMP,
-    slug VARCHAR,
+    slug VARCHAR
 );
 
 CREATE TABLE follow (
     fid SERIAL PRIMARY KEY,
     follower INT REFERENCES users(uid),
     followed INT REFERENCES users(uid)
-)
+);

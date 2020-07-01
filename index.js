@@ -40,8 +40,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-
-
 // Serve Static files
 
 app.use(express.static('public'));
