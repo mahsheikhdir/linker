@@ -1,7 +1,7 @@
 # linker
 
-Express Blog where users can follow others and make private/public posts. You can see this project here: [Link](https://linkup-linker.herokuapp.com/).
-Built with Express and EJS.
+Express Blog where users can follow others and make private/public posts. Built with Express and EJS. You can see this project here: [Link](https://linkup-linker.herokuapp.com/).
+
 
 ### Installing
 
